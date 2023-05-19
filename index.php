@@ -54,7 +54,21 @@
 
 </head>
 <body>
+
+<h1>Hotel</h1>
+
+<?php
+for ($i = 0; $i < count($hotels); $i++) {
+    echo "Nome: " . $hotels[$i]['name'];
+    echo "Descrizione: " . $hotels[$i]['description'];
+    echo "Parcheggio: " . ($hotels[$i]['parking'] ? 'Si' : 'No');
+    echo "Voto: " . $hotels[$i]['vote'];
+    echo "Distanza dal centro: " . $hotels[$i]['distance_to_center'] . "Km";
+}
+?>
+
     
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 </html>
