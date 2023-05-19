@@ -56,8 +56,26 @@
 <body style="background-color: #F9FAFA;">
 
     <h1 class="text-center my-5">Hotel</h1>
+
+    <div class="container my-3">
+        <!-- form -->
+        <form action="" method="GET" class="d-flex align-items-center">
+            <label for="parking" class="me-3">Parcheggio:</label>
+            <select name="parking" class="form-select" style="width: 75px;">
+                <option selected>...</option>
+                <option value="true">SI</option>
+                <option value="false">NO</option>
+            </select>
+            <input type="submit" value="Filtra" class="btn btn-primary ms-3">
+
+        </form>
+
+
+    </div>
+
     <div class="container bg-white">
 
+        <!-- tabella -->
         <table class="table">
             <thead>
                 <tr>
@@ -70,15 +88,25 @@
             </thead>
             <tbody>
                 <?php
-                    for ($i = 0; $i < count($hotels); $i++) {
+
+                    if (isset($_GET['parking']) && $_GET['parking'] !== '...') {
+                        $filtered_hotels = array_filter($hotels, function ($hotel) {
+                            return $hotel['parking'] == ($_GET['parking'] === 'true');
+                        });
+                    } else {
+                        $filtered_hotels = $hotels;
+                    }
+                    foreach ($filtered_hotels as $hotel) {
                         echo "<tr>";
-                            echo '<td>' . $hotels[$i]['name'] . "</td>";
-                            echo '<td>' . $hotels[$i]['description'] . "</td>";
-                            echo '<td class="text-center">' . ($hotels[$i]['parking'] ? 'Si' : 'No') . "</td>";
-                            echo '<td class="text-center">' . $hotels[$i]['vote'];
-                            echo '<td class="text-end">' . $hotels[$i]['distance_to_center'] . "Km </td>";
+                            echo '<td>' . $hotel['name'] . "</td>";
+                            echo '<td>' . $hotel['description'] . "</td>";
+                            echo '<td class="text-center">' . ($hotel['parking'] ? 'Si' : 'No') .   "</td>";
+                            echo '<td class="text-center">' . $hotel['vote'];
+                            echo '<td class="text-end">' . $hotel['distance_to_center'] . " Km </td>";
                         echo "</tr>";
                     }
+                    
+                    
                 ?>
             </tbody>
         </table>
