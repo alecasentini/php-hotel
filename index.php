@@ -60,13 +60,26 @@
     <div class="container my-3">
         <!-- form -->
         <form action="" method="GET" class="d-flex align-items-center">
+            <!-- filtro parcheggio -->
             <label for="parking" class="me-3">Parcheggio:</label>
             <select name="parking" class="form-select" style="width: 75px;">
                 <option selected>...</option>
                 <option value="true">SI</option>
                 <option value="false">NO</option>
             </select>
-            <input type="submit" value="Filtra" class="btn btn-primary ms-3">
+
+            <!-- filtro voto -->
+            <label for="vote" class="ms-5 me-3">Voto:</label>
+            <select name="vote" class="form-select" style="width: 75px;">
+                <option selected>...</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <input type="submit" value="Filtra" class="btn btn-primary ms-5">
+            <a href="<?php echo $_SERVER['PHP_SELF']; ?>" class="btn btn-success ms-5">Mostra tutti</a>
 
         </form>
 
@@ -88,14 +101,19 @@
             </thead>
             <tbody>
                 <?php
+                    $filtered_hotels = array_filter($hotels, function ($hotel) {
+                        $parkingFilter = true;
+                        if (isset($_GET['parking']) && $_GET['parking'] !== '...') {
+                            $parkingFilter = $hotel['parking'] == ($_GET['parking'] === 'true');
+                        }
+                        $voteFilter = true;
+                        if (isset($_GET['vote']) && $_GET['vote'] !== '...') {
+                            $voteFilter = $hotel['vote'] >= $_GET['vote'];
+                        }
+                        return $parkingFilter && $voteFilter;
+                    });
+                    
 
-                    if (isset($_GET['parking']) && $_GET['parking'] !== '...') {
-                        $filtered_hotels = array_filter($hotels, function ($hotel) {
-                            return $hotel['parking'] == ($_GET['parking'] === 'true');
-                        });
-                    } else {
-                        $filtered_hotels = $hotels;
-                    }
                     foreach ($filtered_hotels as $hotel) {
                         echo "<tr>";
                             echo '<td>' . $hotel['name'] . "</td>";
